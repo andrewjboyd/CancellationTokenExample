@@ -18,14 +18,14 @@ namespace WebApiPlayAround.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<IEnumerable<WeatherForecast>> Get(CancellationToken cancellationToken)
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
             var Id = Guid.NewGuid();
-            _logger.LogInformation("Db Call start {ThreadId}, isCancellationRequested {cancellationToken}. DateTime {DateTime}", Id, cancellationToken.IsCancellationRequested, DateTime.Now);
+            _logger.LogInformation("Db Call start {ThreadId}. DateTime {DateTime}", Id, DateTime.Now);
 
-            var result = await _exampleDbContext.WeatherForecasts.FromSqlRaw("EXECUTE dbo.GetWeatherDetails").ToListAsync(cancellationToken);
+            var result = await _exampleDbContext.WeatherForecasts.FromSqlRaw("EXECUTE dbo.GetWeatherDetails").ToListAsync();
 
-            _logger.LogInformation("Db Call end {ThreadId}, isCancellationRequested {cancellationToken}. DateTime {DateTime}", Id, cancellationToken.IsCancellationRequested, DateTime.Now);
+            _logger.LogInformation("Db Call end {ThreadId}. DateTime {DateTime}", Id, DateTime.Now);
             return result;
         }
     }
