@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 export function FetchData() {
   const [forecasts, setForecasts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const controller = new AbortController();
-  
     async function populateWeatherData() {
-      const response = await fetch('https://localhost:7086/weatherforecast', { signal: controller.signal });
+      const response = await fetch("https://localhost:7086/weatherforecast");
       const data = await response.json();
       setForecasts(data);
       setLoading(false);
     }
 
     populateWeatherData();
-
-    return () => {
-      controller.abort();
-    }
   }, []);
 
   function renderForecastsTable() {
@@ -50,7 +44,13 @@ export function FetchData() {
     <div>
       <h1 id="tableLabel">Weather forecast</h1>
       <p>This component demonstrates fetching data from the server.</p>
-      {loading ? <p><em>Loading...</em></p> : renderForecastsTable()}
+      {loading ? (
+        <p>
+          <em>Loading...</em>
+        </p>
+      ) : (
+        renderForecastsTable()
+      )}
     </div>
   );
 }
